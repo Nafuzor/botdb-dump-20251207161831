@@ -1,0 +1,283 @@
+{
+  "generated_at": "2025-12-07 16:18:31",
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        "id",
+        "username",
+        "reputation",
+        "balance",
+        "subscription_type",
+        "subscription_end",
+        "referral_code",
+        "referrals_count",
+        "profit_level",
+        "card_number",
+        "cvv",
+        "card_balance",
+        "card_status",
+        "card_password",
+        "card_activation_date",
+        "phone_number",
+        "last_activity",
+        "api_token",
+        "block_reason"
+      ],
+      "preview_rows": [
+        {
+          "id": 7063766212,
+          "username": "nafuzor",
+          "reputation": 10.0,
+          "balance": 156.0,
+          "subscription_type": "VIP Nexus",
+          "subscription_end": "2025-10-15T14:58:24.461075+03:00",
+          "referral_code": "ref_7063766212",
+          "referrals_count": 0,
+          "profit_level": "новичок",
+          "card_number": "8066876913342661",
+          "cvv": "165",
+          "card_balance": 111.0,
+          "card_status": "active",
+          "card_password": "1111",
+          "card_activation_date": "2025-09-18T17:20:37.362923+03:00",
+          "phone_number": null,
+          "last_activity": "2025-09-20T20:36:36.734028+03:00",
+          "api_token": "7063766212:d9b31813-f7a1-42ff-a3f4-8b97e31297ea",
+          "block_reason": null
+        }
+      ],
+      "total_rows": 1
+    },
+    {
+      "name": "admins",
+      "columns": [
+        "id"
+      ],
+      "preview_rows": [
+        {
+          "id": 7063766212
+        }
+      ],
+      "total_rows": 1
+    },
+    {
+      "name": "queue",
+      "columns": [
+        "id",
+        "user_id",
+        "phone_number",
+        "added_time",
+        "type"
+      ],
+      "preview_rows": [],
+      "total_rows": 0
+    },
+    {
+      "name": "sqlite_sequence",
+      "columns": [
+        "name",
+        "seq"
+      ],
+      "preview_rows": [
+        {
+          "name": "admin_logs",
+          "seq": 70
+        },
+        {
+          "name": "payments",
+          "seq": 46
+        },
+        {
+          "name": "queue",
+          "seq": 6
+        },
+        {
+          "name": "logs",
+          "seq": 14
+        },
+        {
+          "name": "working",
+          "seq": 5
+        }
+      ],
+      "total_rows": 9
+    },
+    {
+      "name": "working",
+      "columns": [
+        "id",
+        "user_id",
+        "phone_number",
+        "start_time",
+        "admin_id",
+        "type"
+      ],
+      "preview_rows": [],
+      "total_rows": 0
+    },
+    {
+      "name": "successful",
+      "columns": [
+        "id",
+        "user_id",
+        "phone_number",
+        "hold_time",
+        "acceptance_time",
+        "flight_time",
+        "type"
+      ],
+      "preview_rows": [
+        {
+          "id": 1,
+          "user_id": 7063766212,
+          "phone_number": "9010376543",
+          "hold_time": "79:04",
+          "acceptance_time": "2025-09-15T14:55:50.645487+03:00",
+          "flight_time": "2025-09-18T22:00:03.455129+03:00",
+          "type": "unknown"
+        },
+        {
+          "id": 2,
+          "user_id": 7063766212,
+          "phone_number": "9010375237",
+          "hold_time": "89:51",
+          "acceptance_time": "2025-09-15T20:30:54.449524+03:00",
+          "flight_time": "2025-09-19T14:22:31.085425+03:00",
+          "type": "unknown"
+        }
+      ],
+      "total_rows": 2
+    },
+    {
+      "name": "blocked",
+      "columns": [
+        "id",
+        "user_id",
+        "phone_number",
+        "type"
+      ],
+      "preview_rows": [
+        {
+          "id": 1,
+          "user_id": 7063766212,
+          "phone_number": "+79010375432",
+          "type": null
+        },
+        {
+          "id": 2,
+          "user_id": 7063766212,
+          "phone_number": "+79010375238",
+          "type": null
+        },
+        {
+          "id": 3,
+          "user_id": 7063766212,
+          "phone_number": "9010375234",
+          "type": null
+        }
+      ],
+      "total_rows": 3
+    },
+    {
+      "name": "referrals",
+      "columns": [
+        "referer_id",
+        "referee_id"
+      ],
+      "preview_rows": [],
+      "total_rows": 0
+    },
+    {
+      "name": "withdraw_requests",
+      "columns": [
+        "id",
+        "user_id",
+        "amount",
+        "status",
+        "created_at"
+      ],
+      "preview_rows": [
+        {
+          "id": 1,
+          "user_id": 7063766212,
+          "amount": 222.0,
+          "status": "paid",
+          "created_at": null
+        },
+        {
+          "id": 2,
+          "user_id": 7063766212,
+          "amount": 100.0,
+          "status": "pending",
+          "created_at": null
+        },
+        {
+          "id": 3,
+          "user_id": 7063766212,
+          "amount": 100.0,
+          "status": "closed",
+          "created_at": null
+        },
+        {
+          "id": 4,
+          "user_id": 7063766212,
+          "amount": 100.0,
+          "status": "closed",
+          "created_at": null
+        },
+        {
+          "id": 5,
+          "user_id": 7063766212,
+          "amount": 55.0,
+          "status": "closed",
+          "created_at": null
+        }
+      ],
+      "total_rows": 6
+    },
+    {
+      "name": "logs",
+      "columns": [
+        "id",
+        "user_id",
+        "action",
+        "timestamp"
+      ],
+      "preview_rows": [
+        {
+          "id": 1,
+          "user_id": 7063766212,
+          "action": "Добавлен номер +79010375238 типа max",
+          "timestamp": "2025-09-14T20:59:51.533595+03:00"
+        },
+        {
+          "id": 2,
+          "user_id": 7063766212,
+          "action": "Добавлен номер +79010375238 типа max",
+          "timestamp": "2025-09-14T21:39:13.884239+03:00"
+        },
+        {
+          "id": 3,
+          "user_id": 7063766212,
+          "action": "Принял номер +79010375238 в работу",
+          "timestamp": "2025-09-14T21:40:01.855182+03:00"
+        },
+        {
+          "id": 4,
+          "user_id": 7063766212,
+          "action": "Добавлен номер 9010375234 типа vc",
+          "timestamp": "2025-09-14T22:01:25.267733+03:00"
+        },
+        {
+          "id": 5,
+          "user_id": 7063766212,
+          "action": "Добавлен номер +79010375432 типа max",
+          "timestamp": "2025-09-14T22:01:37.504181+03:00"
+        }
+      ],
+      "total_rows": 14
+    }
+  ],
+  "total_records": 36
+}
