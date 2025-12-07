@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Дамп базы данных bot.db</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header h1 i {
+            font-size: 3rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .table-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        th {
+            background: #f1f5f9;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid #cbd5e1;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background: #f8fafc;
+        }
+        
+        .table-footer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .badge {
+            background: #dbeafe;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        
+        .metadata {
+            background: #f0f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .metadata h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metadata-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .metadata-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .metadata-value {
+            font-weight: 600;
+            color: var(--dark);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        .footer a {
+            color: #93c5fd;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .table-section {
+                padding: 20px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-database"></i> Дамп базы данных: bot.db</h1>
+            <p>Автоматически сгенерированный обзор содержимого базы данных</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">ТАБЛИЦ В БАЗЕ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">36</div>
+                    <div class="stat-label">ВСЕГО ЗАПИСЕЙ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2025-12-07 16:18:31</div>
+                    <div class="stat-label">ОБНОВЛЕНО</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">nafuzor</div>
+                    <div class="stat-label">ПОЛЬЗОВАТЕЛЬ</div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="table-section">
+            <h3>📊 Таблица: users</h3>
+            <p>Всего записей: <span class="highlight">1</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>username</th><th>reputation</th><th>balance</th><th>subscription_type</th><th>subscription_end</th><th>referral_code</th><th>referrals_count</th><th>profit_level</th><th>card_number</th><th>cvv</th><th>card_balance</th><th>card_status</th><th>card_password</th><th>card_activation_date</th><th>phone_number</th><th>last_activity</th><th>api_token</th><th>block_reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>7063766212</td><td>nafuzor</td><td>10.0</td><td>156.0</td><td>VIP Nexus</td><td>2025-10-15T14:58:24.461075+03:00</td><td>ref_7063766212</td><td>0</td><td>новичок</td><td>8066876913342661</td><td>165</td><td>111.0</td><td>active</td><td>1111</td><td>2025-09-18T17:20:37.362923+03:00</td><td>None</td><td>2025-09-20T20:36:36.734028+03:00</td><td>7063766212:d9b31813-f7a1-42ff-a3f4-8b97e31297ea</td><td>None</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: admins</h3>
+            <p>Всего записей: <span class="highlight">1</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>7063766212</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: queue</h3>
+            <p>Всего записей: <span class="highlight">0</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>user_id</th><th>phone_number</th><th>added_time</th><th>type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: sqlite_sequence</h3>
+            <p>Всего записей: <span class="highlight">9</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>name</th><th>seq</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>admin_logs</td><td>70</td></tr><tr><td>payments</td><td>46</td></tr><tr><td>queue</td><td>6</td></tr><tr><td>logs</td><td>14</td></tr><tr><td>working</td><td>5</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: working</h3>
+            <p>Всего записей: <span class="highlight">0</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>user_id</th><th>phone_number</th><th>start_time</th><th>admin_id</th><th>type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: successful</h3>
+            <p>Всего записей: <span class="highlight">2</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>user_id</th><th>phone_number</th><th>hold_time</th><th>acceptance_time</th><th>flight_time</th><th>type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>1</td><td>7063766212</td><td>9010376543</td><td>79:04</td><td>2025-09-15T14:55:50.645487+03:00</td><td>2025-09-18T22:00:03.455129+03:00</td><td>unknown</td></tr><tr><td>2</td><td>7063766212</td><td>9010375237</td><td>89:51</td><td>2025-09-15T20:30:54.449524+03:00</td><td>2025-09-19T14:22:31.085425+03:00</td><td>unknown</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: blocked</h3>
+            <p>Всего записей: <span class="highlight">3</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>user_id</th><th>phone_number</th><th>type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>1</td><td>7063766212</td><td>+79010375432</td><td>None</td></tr><tr><td>2</td><td>7063766212</td><td>+79010375238</td><td>None</td></tr><tr><td>3</td><td>7063766212</td><td>9010375234</td><td>None</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: referrals</h3>
+            <p>Всего записей: <span class="highlight">0</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>referer_id</th><th>referee_id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: withdraw_requests</h3>
+            <p>Всего записей: <span class="highlight">6</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>user_id</th><th>amount</th><th>status</th><th>created_at</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>1</td><td>7063766212</td><td>222.0</td><td>paid</td><td>None</td></tr><tr><td>2</td><td>7063766212</td><td>100.0</td><td>pending</td><td>None</td></tr><tr><td>3</td><td>7063766212</td><td>100.0</td><td>closed</td><td>None</td></tr><tr><td>4</td><td>7063766212</td><td>100.0</td><td>closed</td><td>None</td></tr><tr><td>5</td><td>7063766212</td><td>55.0</td><td>closed</td><td>None</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <h3>📊 Таблица: logs</h3>
+            <p>Всего записей: <span class="highlight">14</span></p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>user_id</th><th>action</th><th>timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <tr><td>1</td><td>7063766212</td><td>Добавлен номер +79010375238 типа max</td><td>2025-09-14T20:59:51.533595+03:00</td></tr><tr><td>2</td><td>7063766212</td><td>Добавлен номер +79010375238 типа max</td><td>2025-09-14T21:39:13.884239+03:00</td></tr><tr><td>3</td><td>7063766212</td><td>Принял номер +79010375238 в работу</td><td>2025-09-14T21:40:01.855182+03:00</td></tr><tr><td>4</td><td>7063766212</td><td>Добавлен номер 9010375234 типа vc</td><td>2025-09-14T22:01:25.267733+03:00</td></tr><tr><td>5</td><td>7063766212</td><td>Добавлен номер +79010375432 типа max</td><td>2025-09-14T22:01:37.504181+03:00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span class="badge">Показано: {min(10, len(table_info.get('preview_rows', [])))} из {table_info['total_rows']} записей</span>
+            </div>
+        </div>
+        
+        
+        <div class="metadata">
+            <h4><i class="fas fa-info-circle"></i> Метаданные экспорта</h4>
+            <div class="metadata-grid">
+                <div class="metadata-item">
+                    <div class="metadata-label">Файл базы данных</div>
+                    <div class="metadata-value">bot.db</div>
+                </div>
+                <div class="metadata-item">
+                    <div class="metadata-label">Время генерации</div>
+                    <div class="metadata-value">2025-12-07 16:18:31</div>
+                </div>
+                <div class="metadata-item">
+                    <div class="metadata-label">Формат данных</div>
+                    <div class="metadata-value">SQLite 3</div>
+                </div>
+                <div class="metadata-item">
+                    <div class="metadata-label">Экспортировано строк</div>
+                    <div class="metadata-value">36</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>✨ Сгенерировано автоматически Telegram ботом</p>
+        <p>📅 07.12.2025 16:18:35 | 📁 База данных: bot.db</p>
+        <p>⚠️ Данные доступны только для чтения. Изменения в базе не сохраняются.</p>
+    </div>
+    
+    <script>
+        // Добавляем подсветку строк таблицы
+        document.addEventListener('DOMContentLoaded', function() {
+            const tables = document.querySelectorAll('table');
+            tables.forEach(table => {
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    // Задержка для анимации
+                    setTimeout(() => {
+                        row.style.opacity = '1';
+                        row.style.transform = 'translateY(0)';
+                    }, index * 30);
+                    
+                    // Подсветка при наведении
+                    row.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = '#f0f9ff';
+                    });
+                    
+                    row.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = '';
+                    });
+                });
+            });
+            
+            // Анимация появления
+            const elements = document.querySelectorAll('.table-section, .stat-card');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+        
+        // Изначально скрываем элементы для анимации
+        document.querySelectorAll('.table-section, .stat-card, table tbody tr').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(10px)';
+            el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        });
+    </script>
+</body>
+</html>
